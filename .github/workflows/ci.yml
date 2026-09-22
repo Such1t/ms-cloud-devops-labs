@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
   pull_request:
@@ -18,13 +17,11 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
       - run: npm ci
-      # Cheapest check first, so a typo fails in seconds instead of minutes.
       - run: npm run lint
       - run: npm test
       - run: npm run test:int
 
   docker:
-    # No point building an image from code that is already known to be broken.
     needs: test
     runs-on: ubuntu-latest
     steps:
