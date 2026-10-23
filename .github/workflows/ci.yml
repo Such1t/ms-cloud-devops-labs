@@ -75,3 +75,21 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}/notes-frontend:latest
             ghcr.io/${{ github.repository }}/notes-frontend:${{ github.sha }}
+
+  publish:
+    needs: docker
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: docker build -t ghcr.io/such1t/notes-backend:${{ github.sha }} ./backend
+      - run: docker build --build-arg API_URL=http://localhost:3000 -t ghcr.io/such1t/notes-frontend:${{ github.sha }} ./frontend
+      - run: docker push ghcr.io/such1t/notes-backend:${{ github.sha }}
+      - run: docker push ghcr.io/such1t/notes-frontend:${{ github.sha }}
