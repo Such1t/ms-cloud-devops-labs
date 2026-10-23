@@ -10,7 +10,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "lint": "eslint src test",
-    "test": "vitest run test/notes.test.ts",
+    "test": "vitest run test/notes.test.ts test/notes.length.test.ts",
     "test:int": "vitest run test/api.int.test.ts"
   },
   "dependencies": {
@@ -29,3 +29,4 @@
     "vitest": "^2.1.8"
   }
 }
+
